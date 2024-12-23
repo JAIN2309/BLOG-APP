@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}User Dashboard{% endblock %}
+{% block content %}
+<h2>Your Blogs</h2>
+<form method="POST" enctype="multipart/form-data" class="mt-4">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.content.label(class="form-label") }}
+        {{ form.content(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.image.label(class="form-label") }}
+        {{ form.image(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-success">{{ form.submit.label.text }}</button>
+</form>
+
+<hr>
+
+<h3 class="mt-4">Your Blogs</h3>
+<div class="row">
+    {% for blog in blogs %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                {% if blog.image %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ blog.image) }}" class="card-img-top" alt="Blog Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ blog.title }}</h5>
+                    <p class="card-text text-truncate">{{ blog.content }}</p>
+                    <p class="text-muted"><small>{{ blog.date_posted.strftime('%b %d, %Y %H:%M') }}</small></p>
+                    <a href="{{ url_for('edit_blog', blog_id=blog.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form method="POST" action="{{ url_for('delete_blog', blog_id=blog.id) }}" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

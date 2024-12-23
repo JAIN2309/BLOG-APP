@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1 class="mb-4">Welcome to BlogApp</h1>
+<div class="row">
+    {% for blog in blogs %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                {% if blog.image %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ blog.image) }}" class="card-img-top" alt="Blog Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ blog.title }}</h5>
+                    <p class="card-text text-truncate">{{ blog.content }}</p>
+                    <p class="text-muted"><small>{{ blog.date_posted.strftime('%b %d, %Y %H:%M') }}</small></p>
+                    <a href="{{ url_for('blog_detail', blog_id=blog.id) }}" class="btn btn-primary btn-sm">Read More</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
